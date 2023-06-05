@@ -4,10 +4,18 @@ module.exports = {
     commonjs: true,
     es2021: true,
   },
-  extends: 'airbnb',
+  extends:[
+    'plugin:react/recommended',
+    'standard-with-typescript'
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json'
   },
+  plugins: [
+    'react'
+  ],
   rules: {
   },
 };
