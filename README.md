@@ -3,7 +3,7 @@ The objective of this technical test is to create a similar application to the o
 Here are the steps to follow:
 
 - [✔] Fetch 100 rows of data using the API.
-- [] Display the data in a table format, similar to the example.
+- [✔]] Display the data in a table format, similar to the example.
 - [] Provide the option to color rows as shown in the example.
 - [] Allow the data to be sorted by country.
 - [] Enable the ability to delete a row.
