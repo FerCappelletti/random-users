@@ -32,7 +32,10 @@ const sortedUsers =   sortByCountry
     return a.location.country.localeCompare(b.location.country)
   }) : users
 
-  console.log(sortedUsers)
+const handleDelete = (email: string) => {
+  const filteredUsers = users.filter((user) => user.email !== email)
+  setUsers(filteredUsers)
+}
 
   return (
     <div className='App'>
@@ -46,7 +49,7 @@ const sortedUsers =   sortByCountry
         </button>
       </header>
       <main>
-        <UsersList showColors={showColors} users={sortedUsers}/>
+        <UsersList deleteUser={handleDelete} showColors={showColors} users={sortedUsers}/>
       </main>
         
     </div>
