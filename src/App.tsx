@@ -7,9 +7,14 @@ function App() {
 
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
+  const [sortByCountry, setSortByCountry] = useState(false)
 
   const toggleColors = () => {
     setShowColors(!showColors)
+  }
+
+  const toggleSortByCountry = () => {
+    setSortByCountry(prevState => !prevState)
   }
 
   useEffect(() => {
@@ -21,6 +26,14 @@ function App() {
       console.log(err)
     }))
   }, [])
+
+const sortedUsers =   sortByCountry 
+  ? users.toSorted((a, b) => {
+    return a.location.country.localeCompare(b.location.country)
+  }) : users
+
+  console.log(sortedUsers)
+
   return (
     <div className='App'>
       <h1>Usuarios</h1>
@@ -28,9 +41,12 @@ function App() {
         <button onClick={toggleColors}>
           Colorear filas
         </button>
+        <button onClick={toggleSortByCountry}>
+          {sortByCountry ? 'No ordenar por país' : 'Ordenar por país' }
+        </button>
       </header>
       <main>
-        <UsersList showColors={showColors} users={users}/>
+        <UsersList showColors={showColors} users={sortedUsers}/>
       </main>
         
     </div>
