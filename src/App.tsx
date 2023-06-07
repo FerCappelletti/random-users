@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { type User } from './types'
 import { UsersList } from './components/UsersList'
@@ -8,6 +8,7 @@ function App() {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, setSortByCountry] = useState(false)
+  const originalUsers = useRef<User[]>([])
 
   const toggleColors = () => {
     setShowColors(!showColors)
@@ -17,25 +18,31 @@ function App() {
     setSortByCountry(prevState => !prevState)
   }
 
+  const sortedUsers =   sortByCountry 
+    ? users.toSorted((a, b) => {
+      return a.location.country.localeCompare(b.location.country)
+    }) : users
+
+  const handleReset = () => {
+    setUsers(originalUsers.current)
+  }  
+
+  const handleDelete = (email: string) => {
+    const filteredUsers = users.filter((user) => user.email !== email)
+    setUsers(filteredUsers)
+  }
+
   useEffect(() => {
     fetch('https://randomuser.me/api?results=100')
     .then(res => res.json()
     .then(res => {
       setUsers(res.results)
+      originalUsers.current = res.results
     }).catch(err => {
       console.log(err)
     }))
   }, [])
 
-const sortedUsers =   sortByCountry 
-  ? users.toSorted((a, b) => {
-    return a.location.country.localeCompare(b.location.country)
-  }) : users
-
-const handleDelete = (email: string) => {
-  const filteredUsers = users.filter((user) => user.email !== email)
-  setUsers(filteredUsers)
-}
 
   return (
     <div className='App'>
@@ -46,6 +53,9 @@ const handleDelete = (email: string) => {
         </button>
         <button onClick={toggleSortByCountry}>
           {sortByCountry ? 'No ordenar por país' : 'Ordenar por país' }
+        </button>
+        <button onClick={handleReset}>
+          Restaurar usuarios
         </button>
       </header>
       <main>
